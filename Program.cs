@@ -1,6 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 // =======================================================
+const string GetGameEndpoint = "GetGame";
+// =======================================================
 // "BODY"
 
 GameDto game = new GameDto(
@@ -19,9 +21,29 @@ app.MapGet("/games", () => games);
 
 // pl. 1 játék lekérése 
 app.MapGet("/games/{id}", 
-        (int id) => games.Find(games => games.Id == id));
+        (int id) => games.Find(games => games.Id == id)).WithName(GetGameEndpoint);
 
+// POST game
+app.MapPost("/games", (CreateGameDto newGame) =>
+{
+    // Új játék
+    GameDto game = new (
+        // id = lista számossága + 1
+        games.Count + 1,
+        newGame.Name,
+        newGame.Genre,
+        newGame.Price,
+        newGame.ReleaseDate
+    );
 
+    // Listához adom
+    games.Add(game);
+
+    // Válasz
+    return Results.CreatedAtRoute(GetGameEndpoint, new {id = game.Id}, game);
+});
+
+// PUT
 
 // =======================================================
 app.Run();

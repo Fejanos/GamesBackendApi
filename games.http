@@ -3,3 +3,14 @@ GET http://localhost:5141/games
 
 ###
 GET http://localhost:5141/games/1
+
+###
+POST http://localhost:5141/games
+Content-Type: application/json
+
+{
+    "name" : "Super Mario Bros. Wonder",
+    "genre": "Platformer",
+    "price": 18000,
+    "releaseDate": "2023-10-20"
+}

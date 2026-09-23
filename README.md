@@ -10,3 +10,6 @@ cd GameStore.Api
 
 # Szerver indítása
 dotnet run
+
+## Szerver leállítása
+CTRL + C a terminálon

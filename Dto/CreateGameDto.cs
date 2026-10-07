@@ -1,7 +1,9 @@
 
+using System.ComponentModel.DataAnnotations;
+
 public record CreateGameDto(
-    string Name,
-    string Genre,
-    int Price,
+    [Required][StringLength(50)]string Name,
+    [Required][StringLength(20)]string Genre,
+    [Range(1, 50000)]int Price,
     DateOnly ReleaseDate
 );

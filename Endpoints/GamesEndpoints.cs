@@ -33,6 +33,18 @@ public static class GamesEndpoints
         // POST game
         group.MapPost("/", (CreateGameDto newGame) =>
         {
+
+            /*
+            if (string.IsNullOrEmpty(newGame.Name))
+            {
+                return Results.BadRequest("Name is required.");
+            }
+            if (string.IsNullOrEmpty(newGame.Genre))
+            {
+                return Results.BadRequest("Name is required.");
+            }
+            */
+
             // Új játék
             GameDto game = new (
                 // id = lista számossága + 1

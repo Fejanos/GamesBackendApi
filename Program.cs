@@ -1,83 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
-// =======================================================
-const string GetGameEndpoint = "GetGame";
-// =======================================================
+
 // "BODY"
 
-GameDto game = new GameDto(
-    1, "Hello Kitty Online", "Simulation, RPG", 6000,
-    new DateOnly(2009, 7, 1)
-);
-
-List<GameDto> games = [
-    game,
-    new (2, "World of Warcraft", "MMORPG", 12000, new DateOnly(2004, 11, 4))
-];
-
-//app.MapGet("/", () => "Hello World!");
-// GET /games -> ÖSSZES
-app.MapGet("/games", () => games);
-
-// pl. 1 játék lekérése 
-app.MapGet("/games/{id}", (int id) =>
-{
-    var game = games.Find(game => game.Id == id);
-
-    //if (game is null ){}
-    // game null ? true : false
-    return game is null ? Results.NotFound() : Results.Ok(game);
-
-}).WithName(GetGameEndpoint);
-
-// POST game
-app.MapPost("/games", (CreateGameDto newGame) =>
-{
-    // Új játék
-    GameDto game = new (
-        // id = lista számossága + 1
-        games.Count + 1,
-        newGame.Name,
-        newGame.Genre,
-        newGame.Price,
-        newGame.ReleaseDate
-    );
-
-    // Listához adom
-    games.Add(game);
-
-    // Válasz
-    return Results.CreatedAtRoute(GetGameEndpoint, new {id = game.Id}, game);
-});
-
-// PUT
-app.MapPut("/games/{id}", (int id, UpdateGameDto updatedGame) =>
-{
-    var index = games.FindIndex(game => game.Id == id);
-
-    if (index == -1)
-    {
-        return Results.NotFound();
-    }
-
-    games[index] = new GameDto (
-        id,
-        updatedGame.Name,
-        updatedGame.Genre,
-        updatedGame.Price,
-        updatedGame.ReleaseDate
-    );
-
-    return Results.NoContent();
-});
-
-// DELETE
-app.MapDelete("/games/{id}", (int id) =>
-{
-    games.RemoveAll(game => game.Id == id);
-
-    return Results.NoContent();
-});
+app.MapGamesEndpoints();
 
 // =======================================================
 app.Run();
